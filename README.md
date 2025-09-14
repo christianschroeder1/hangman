@@ -27,10 +27,7 @@ Guess the word letter by letter before the hangman is completely drawn!
 
 ---
 
-## **Screenshots**
 
-Example of the game screen:
-<img width="960" height="481" alt="image" src="https://github.com/user-attachments/assets/3dfcec42-ce7f-43cf-b62b-62e36664cc91" />
 
 
 
