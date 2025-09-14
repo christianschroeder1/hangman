@@ -2,7 +2,7 @@
 
 ![Hangman ASCII](https://img.shields.io/badge/Language-C%2B%2B-blue)
 
-A classic **Hangman game** implemented in C++ with ASCII graphics.  
+A classic **Hangman game** written in C++ with ASCII graphics.  
 Guess the word letter by letter before the hangman is completely drawn!
 
 ---
