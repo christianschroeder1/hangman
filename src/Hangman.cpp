@@ -150,7 +150,7 @@ void Readwordsfromfile() {
 
     ifstream MyReadFile("wordlist.txt");
     if (!MyReadFile) {
-        message = "could not reat wordlist.txt. using default words.";
+        message = "could not read wordlist.txt. using default words.";
         return;
     }
     
