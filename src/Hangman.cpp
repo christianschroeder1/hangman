@@ -1,6 +1,3 @@
-// Hangman.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
-//
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -110,8 +107,6 @@ string win = R"(
 
 string title = R"(
 
-                                                -Christian Schroeder's-
-
       /$$   /$$        /$$$$$$        /$$   /$$        /$$$$$$        /$$      /$$        /$$$$$$        /$$   /$$
      | $$  | $$       /$$__  $$      | $$$ | $$       /$$__  $$      | $$$    /$$$       /$$__  $$      | $$$ | $$
      | $$  | $$      | $$  \ $$      | $$$$| $$      | $$  \__/      | $$$$  /$$$$      | $$  \ $$      | $$$$| $$
@@ -139,7 +134,6 @@ string looser = R"(
 vector<string> allwords = { "apple", "banana", "cat", "dog", "elephant", "frog", "grape", "house", "ice", "jungle", "kite", "lion", "mountain", "night", "ocean", "piano", "queen", "river", "sun", "tree", "umbrella", "violet", "window", "xylophone", "yacht", "zebra", "air", "book", "cloud", "door", "egg", "fire", "garden", "hat", "island", "juice", "key", "lake", "moon", "nest", "orange", "pen", "quilt", "road", "star", "train", "unicorn", "village", "water", "xenon", "yarn", "zone", "actor", "ball", "circle", "desk", "earth", "forest", "gold", "hill", "idea", "jacket", "king", "leaf", "music", "note", "oasis", "paper", "queen", "rose", "song", "table", "unit", "voice", "wall", "x-ray", "yard", "zeal", "angle", "bridge", "cloud", "dance", "engine", "flower", "game", "heart", "iceberg", "jewel", "knight", "light", "mirror", "needle", "ocean", "puzzle", "quartz", "rocket", "stone", "tiger", "umbrella", "valley", "whale", "xylophone", "yogurt", "zinc" };
 
 string allowedletters[] = { "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z" };
-string list[] = { "1","2","3","4" };
 string word = "searchedword";
 string displayword = "";
 string message = "";
@@ -148,21 +142,12 @@ string wrongletters = "";
 int fails = 0;
 bool playing = true;
 
-void Addwrongletter(char newletter) {
 
-    bool alreadythere = false;
-    for (int i = 0; i < wrongletters.length(); i++) {
-    
-        if (newletter == wrongletters[i])
-            alreadythere = true;
-    }
-
-    if (!alreadythere)
-        wrongletters += newletter;
-
-}
 
 void Readwordsfromfile() {
+
+    //reads the file wordlist.txt and adds the words to the list
+
     ifstream MyReadFile("wordlist.txt");
     if (!MyReadFile) {
         message = "could not reat wordlist.txt. using default words.";
@@ -171,7 +156,7 @@ void Readwordsfromfile() {
     
     allwords.clear();
     string line;
-    while (getline(MyReadFile, line)) {  // std::getline für string
+    while (getline(MyReadFile, line)) {
         allwords.push_back(line);
     }
 
@@ -180,8 +165,10 @@ void Readwordsfromfile() {
 
 string Displaywrongletters() {
 
-    string result;
+    //displays the list of letters that the player has already tried. seperated by ",".
 
+
+    string result;
     for (int i = 0; i < wrongletters.length(); i++) {
         if (i > 0)
             result += ",";
@@ -192,6 +179,7 @@ string Displaywrongletters() {
 
 bool falseinput(string input) {
 
+    //checks whether the letter entered by the player belongs to the list of allowed letters
     bool found = false;
     for (const std::string& letter : allowedletters) {
         if (input == letter) {
@@ -208,6 +196,8 @@ bool falseinput(string input) {
 
 void Clearscreen() {
 
+//Clears the console on different platforms
+
 #ifdef _WIN32
     system("cls"); // nur auf Windows
 #elif __linux__
@@ -220,6 +210,7 @@ void Clearscreen() {
 
 bool Alreadytried(char letter) {
 
+    //checks if the player already tried a letter.
     bool found = false;
     for (int i = 0; i < wrongletters.length(); i++) {
         if (letter == wrongletters[i]) {
@@ -239,9 +230,10 @@ void Setup() {
 
     fails = 0;
     wrongletters = "";
-    std::srand(static_cast<unsigned>(time(nullptr)));
-    int index = std::rand() % sizeof(allowedletters[0]); // zufälliger Index
 
+    //Randomly picks a word from the wordlist
+    std::srand(static_cast<unsigned>(time(nullptr)));
+    int index = std::rand() % allwords.size();
     word = allwords[index];
 
     displayword = "";
@@ -261,6 +253,7 @@ void Setup() {
 
 void Continuescreen() {
 
+    //Asks the player if they want to keep playing
     cout << "Play again? (y/n)";
     string answer;
     cin >> answer;
@@ -272,6 +265,8 @@ void Continuescreen() {
 }
 
 void Helpscreen() {
+
+    
 
     string helpstring = R"(
 #######################################################################
@@ -296,6 +291,8 @@ void Helpscreen() {
 
 void Checkinput(string answer) {
 
+    //processes the playerinput
+
     if (answer == "help") {
         Helpscreen();
     }
@@ -309,8 +306,7 @@ void Checkinput(string answer) {
         cin.ignore();
     }
 
-    else {
-        
+    else {        
         if (!Alreadytried(answer[0])) {
 
             bool isinword = false;
@@ -322,7 +318,7 @@ void Checkinput(string answer) {
             }
 
             if (!isinword) {
-                Addwrongletter(answer[0]);
+                wrongletters += answer[0];
                 fails++;
 
                 if (fails >= 11) {
@@ -354,7 +350,7 @@ void Checkinput(string answer) {
 void Mainloop() {
 
     Clearscreen();
-    cout << "\n";
+    cout << "Guess the word.\n";
     cout << failstates[fails];
     cout << "\n\n";
     cout << "Word: "+displayword;
